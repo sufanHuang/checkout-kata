@@ -130,6 +130,18 @@ describe('API functionality', () => {
 
             expect(result).to.be.true
         })
+
+        it('should return zero if there is no item in cart', ()=>{
+            let api = require(modulePath)
+            api.emptyCart()
+
+            let { total, withoutMarkdown, savings } = api.getCartTotals()
+            let result = (total===0 && withoutMarkdown===0 && savings===0)
+
+            expect(result).to.be.true
+        })
+
+
     });
 
 
