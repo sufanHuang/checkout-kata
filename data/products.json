@@ -1,0 +1,22 @@
+[
+  {
+    "itemId": "banana",
+    "price": 2.15,
+    "markdownPrice": 1.75
+  },
+  {
+    "itemId": "apple",
+    "price": 2.15,
+    "markdownPrice": 2.15
+  },
+  {
+    "itemId": "coconut",
+    "price": 2.15,
+    "markdownPrice": 2.15
+  },
+  {
+    "itemId": "melon",
+    "price": 2.15,
+    "markdownPrice": 1.75
+  }
+]
