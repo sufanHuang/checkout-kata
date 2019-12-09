@@ -1,0 +1,11 @@
+{
+  "name": "checkout-kata",
+  "version": "1.0.0",
+  "description": "Kata code for excercise",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Sufan Huang",
+  "license": "ISC"
+}
