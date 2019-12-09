@@ -112,17 +112,17 @@ describe('API functionality', () => {
         it('should sum total amount of items in cart, with and without markdown', ()=>{
             let api= require(modulePath)
             let quantityOne = chance.d10()
-            let itemOne = _.find(defaultProducts, "banana" )
+            let itemOne = _.find(defaultProducts, { itemId: 'banana'} )
             let itemOneTotal = itemOne.markdownPrice * quantityOne
             let itemOneWithoutMarkdown = itemOne.price * quantityOne
 
             let quantityTwo = chance.d10()
-            let itemTwo = _.find(defaultProducts, "apple" )
+            let itemTwo = _.find(defaultProducts, { itemId: 'apple'} )
             let itemTwoTotal = itemTwo.price* quantityTwo
 
             api.addItemToCart("banana", quantityOne)
             api.addItemToCart("apple", quantityTwo)
-            let { total, withoutMarkdown, savings } = api.getCartTotal()
+            let { total, withoutMarkdown, savings } = api.getCartTotals()
 
             let result = (total === itemOneTotal + itemTwoTotal
                           && withoutMarkdown === itemOneWithoutMarkdown + itemTwoTotal
