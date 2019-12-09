@@ -55,15 +55,14 @@ describe('API functionality', () => {
             expect(result).to.be.true
         })
 
-        it('should not set new price if newPrice is a string', () =>{
+        it('should not set price if item not exist', () =>{
             let api = require(modulePath)
-            let newPrice = chance.word()
+            let newPrice = chance.d10()
             let itemId = chance.pickone(_.map(defaultProducts, 'itemId' )) + chance.word()
 
-            api.setPrice(itemId, newPrice)
-            let currentItem = _.find(defaultProducts, { itemId })
+            let result = api.setPrice(itemId, newPrice)
 
-            expect(currentItem).to.be.false
+            expect(result).to.be.false
         })
     });
 
@@ -124,11 +123,13 @@ describe('API functionality', () => {
             api.addItemToCart("apple", quantityTwo)
             let { total, withoutMarkdown, savings } = api.getCartTotals()
 
-            let result = (total === itemOneTotal + itemTwoTotal
-                          && withoutMarkdown === itemOneWithoutMarkdown + itemTwoTotal
-                          && savings === withoutMarkdown - total)
+            let resultOne = (total === itemOneTotal + itemTwoTotal)
+            let resultTwo = (withoutMarkdown === itemOneWithoutMarkdown + itemTwoTotal)
+            let resultThree = (savings === withoutMarkdown - total)
 
-            expect(result).to.be.true
+            expect(resultOne).to.be.true
+            expect(resultTwo).to.be.true
+            expect(resultThree).to.be.true
         })
 
         it('should return zero if there is no item in cart', ()=>{
@@ -136,9 +137,13 @@ describe('API functionality', () => {
             api.emptyCart()
 
             let { total, withoutMarkdown, savings } = api.getCartTotals()
-            let result = (total===0 && withoutMarkdown===0 && savings===0)
+            let resultOne = (total === 0)
+            let resultTwo = (withoutMarkdown === 0)
+            let resultThree = (savings === 0)
 
-            expect(result).to.be.true
+            expect(resultOne).to.be.true
+            expect(resultTwo).to.be.true
+            expect(resultThree).to.be.true
         })
 
 

@@ -31,7 +31,6 @@ module.exports = {
         cart = []
     },
 
-    //remove items from cart
     removeItemFromCart: (itemId) => {
         let currentItem = _.find(cart, {itemId})
         _.remove(cart,currentItem)
