@@ -39,6 +39,26 @@ describe('API functionality', () => {
             expect(result).to.be.false
             expect(cart).to.deep.equal([])
         });
+
+        it('should add item within limit if there is one', ()=>{
+            let api = require(modulePath)
+            let quantity = 6
+            let limit = 4
+            let itemId = chance.pickone(_.map(defaultProducts, 'itemId'))
+            let result = api.addItemToCart(itemId, quantity, limit)
+
+            expect(result).to.equal('You have exceeded limit!')
+        });
+
+        it('should not add item if quantity is less than one',()=>{
+            let api = require(modulePath)
+            let quantity = 0
+            let itemId = chance.pickone(_.map(defaultProducts, 'itemId'))
+
+            let result = api.addItemToCart(itemId, quantity)
+
+            expect(result).to.equal('Your selected quantity is invalid')
+        })
     })
 
     describe('setPrice functionality', () => {
@@ -89,6 +109,7 @@ describe('API functionality', () => {
 
             expect(result).to.be.false
         })
+
     });
 
     describe('setMarkdown functionality', () => {
@@ -103,6 +124,16 @@ describe('API functionality', () => {
             let result = currentItem.markdownPrice === price
 
             expect(result).to.be.true
+        })
+
+        it('should not set markdownPrice if item not exist', () =>{
+            let api = require(modulePath)
+            let price = chance.d10()
+            let itemId = chance.pickone(_.map(defaultProducts, 'itemId' )) + chance.word()
+
+            let result = api.setMarkdown(itemId, price)
+
+            expect(result).to.be.false
         })
     });
 
@@ -146,7 +177,40 @@ describe('API functionality', () => {
             expect(resultThree).to.be.true
         })
 
+    });
 
+    describe('setSpecialNforX functionality', () => {
+
+        it('should set a new markdownPrice for an item with limit as a special item', ()=>{
+            let api = require(modulePath)
+            let specialItem = _.find(defaultProducts, { itemId: 'coconut'} )
+
+            api.setSpecialNforX("coconut", 2,4.00,4)
+
+            let ItemMarkdown = specialItem.markdownPrice
+            let resultOne = ItemMarkdown === 2
+            let resultTwo = specialItem.limit === 4
+
+            expect(resultOne).to.be.true
+            expect(resultTwo).to.be.true
+        })
+    });
+
+    describe('setSpecialNitemsGetMfree functionality', () => {
+
+        it('should set a new markdownPrice for an item with limit as a special item', ()=>{
+            let api = require(modulePath)
+            let specialItem = _.find(defaultProducts, { itemId: 'melon'} )
+
+            api.setSpecialNitemsGetMfree("melon", 2,1,6)
+
+            let ItemMarkdown = specialItem.markdownPrice
+            let resultOne = ItemMarkdown === 2.15 * (2+1) / 2
+            let resultTwo = specialItem.limit === 6
+
+            expect(resultOne).to.be.true
+            expect(resultTwo).to.be.true
+        })
     });
 
 

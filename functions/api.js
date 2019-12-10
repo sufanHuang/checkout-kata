@@ -7,11 +7,23 @@ module.exports = {
 
     setPrice: (itemId, newPrice) => {
         let currentItem = _.find(products, { itemId })
-        currentItem.price = newPrice
+        if(currentItem){
+            currentItem.price = newPrice
+            return true
+        }
+        return false
     },
 
-    addItemToCart: (itemId, quantity) => {
+    addItemToCart: (itemId, quantity, limit) => {
         let currentItem = _.find(products, { itemId })
+
+        if (limit !== 0 && quantity > limit) {
+            return "You have exceeded limit!"
+        }
+
+        if (quantity <= 0) {
+            return "Your selected quantity is invalid"
+        }
 
         if(currentItem) {
             let cartItem = {
@@ -32,14 +44,44 @@ module.exports = {
     },
 
     removeItemFromCart: (itemId) => {
-        let currentItem = _.find(cart, {itemId})
-        _.remove(cart,currentItem)
+        let currentItem = _.find(cart, { itemId })
+        if(currentItem){
+            _.remove(cart,currentItem)
+            return true
+        }
+        return false
     },
 
     setMarkdown: (itemId, price) => {
-        let currentItem = _.find(products,{itemId})
-        currentItem.markdownPrice = price
+        let currentItem = _.find(products,{ itemId })
+        if(currentItem){
+            currentItem.markdownPrice = price
+            return true
+        }
+        return false
     },
+
+    setSpecialNforX: (itemId, specialQuantity, totalPrice,limit)=>{
+        let currentItem = _.find(products, { itemId })
+        if(currentItem){
+            currentItem.markdownPrice = totalPrice / specialQuantity
+            currentItem.limit = limit
+            return true
+        }
+        return false
+    },
+
+    setSpecialNitemsGetMfree:(itemId, quantity, quantityFree, limit)=>{
+        let currentItem = _.find(products, { itemId })
+        if(currentItem){
+            currentItem.markdownPrice = currentItem.price * (quantity + quantityFree) / quantity
+            currentItem.limit = limit
+            return true
+        }
+        return false
+
+    },
+
 
     getCartTotals: () => {
         let total = _.reduce(cart, (total, item) => {
