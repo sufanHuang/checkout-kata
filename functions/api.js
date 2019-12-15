@@ -1,12 +1,12 @@
 const _ = require('lodash')
-const products = require('../data/products')
+const totalHelper = require('./totalHelper')
 
 let cart = []
 
 module.exports = {
 
     setPrice: (itemId, newPrice) => {
-        let currentItem = _.find(products, { itemId })
+        let currentItem = totalHelper.getProduct(itemId)
         if(currentItem){
             currentItem.price = newPrice
             return true
@@ -14,15 +14,11 @@ module.exports = {
         return false
     },
 
-    addItemToCart: (itemId, quantity, limit) => {
-        let currentItem = _.find(products, { itemId })
+    addItemToCart: (itemId, quantity) => {
+        let currentItem = totalHelper.getProduct(itemId)
 
-        if (limit !== 0 && quantity > limit) {
-            return "You have exceeded limit!"
-        }
-
-        if (quantity <= 0) {
-            return "Your selected quantity is invalid"
+        if (!_.isNumber(quantity) || quantity < 1) {
+            return false
         }
 
         if(currentItem) {
@@ -31,7 +27,7 @@ module.exports = {
                 quantity
             }
 
-            cart = cart.concat([cartItem])
+            cart.push(cartItem)
 
             return true
         }
@@ -39,21 +35,21 @@ module.exports = {
         return false
     },
 
-    emptyCart: () => {
+    clearCart: () => {
         cart = []
     },
 
     removeItemFromCart: (itemId) => {
-        let currentItem = _.find(cart, { itemId })
+        let currentItem = totalHelper.getProduct(itemId)
         if(currentItem){
-            _.remove(cart,currentItem)
+            _.remove(cart, { itemId })
             return true
         }
         return false
     },
 
     setMarkdown: (itemId, price) => {
-        let currentItem = _.find(products,{ itemId })
+        let currentItem = totalHelper.getProduct(itemId)
         if(currentItem){
             currentItem.markdownPrice = price
             return true
@@ -61,54 +57,46 @@ module.exports = {
         return false
     },
 
-    setSpecialNforX: (itemId, specialQuantity, totalPrice,limit)=>{
-        let currentItem = _.find(products, { itemId })
+    setSpecial: (itemId, specialQuantity, totalPrice,limit)=>{
+        let currentItem = totalHelper.getProduct(itemId)
         if(currentItem){
-            currentItem.markdownPrice = totalPrice / specialQuantity
+            currentItem.specialsPrice = totalPrice / specialQuantity
             currentItem.limit = limit
+            currentItem.specialMode = 'N-for-X'
             return true
         }
         return false
     },
 
-    setSpecialNitemsGetMfree:(itemId, quantity, quantityFree, limit)=>{
-        let currentItem = _.find(products, { itemId })
+    setFreeSpecial:(itemId, quantity, quantityFree, limit)=>{
+        let currentItem = totalHelper.getProduct(itemId)
         if(currentItem){
-            currentItem.markdownPrice = currentItem.price * (quantity + quantityFree) / quantity
+            currentItem.freeQuantity = quantityFree
+            currentItem.requiredQuantity = quantity
             currentItem.limit = limit
+            currentItem.specialMode = 'N-with-X'
             return true
         }
         return false
-
     },
 
+    setCombinationSpecial: (itemId, quantity, reducedPrice, reducedPriceQuantity) => {
+        let currentItem = totalHelper.getProduct(itemId)
+        if(currentItem) {
+            currentItem.requiredQuantity = quantity
+            currentItem.reducedPrice = reducedPrice
+            currentItem.reducedPriceQuantity = reducedPriceQuantity
+            currentItem.specialMode = 'N-with-price-X'
+
+            return true
+        }
+
+        return false
+    },
 
     getCartTotals: () => {
-        let total = _.reduce(cart, (total, item) => {
-            let { itemId, quantity } = item
-            let currentItem = _.find(products, { itemId })
-
-            if(currentItem) {
-                let { markdownPrice, price } = currentItem
-                let itemPrice = markdownPrice < price ? markdownPrice : price
-
-                return total + itemPrice * quantity
-            }
-
-            return total
-        }, 0)
-
-        let withoutMarkdown = _.reduce(cart,(total, item) =>{
-            let {itemId, quantity} = item
-            let currentItem =_.find(products,{itemId})
-
-            if(currentItem) {
-                let {price} = currentItem
-                return total + price * quantity
-            }
-
-            return total
-        }, 0)
+        let total = _.reduce(cart, totalHelper.getTotal, 0)
+        let withoutMarkdown = _.reduce(cart, totalHelper.getMaximumTotal, 0)
 
         return {
             total,
@@ -119,5 +107,9 @@ module.exports = {
 
     getCart: () => {
         return cart
+    },
+
+    getProduct: (itemId) => {
+        return totalHelper.getProduct(itemId)
     }
 }
