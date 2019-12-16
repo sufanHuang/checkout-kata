@@ -1,9 +1,7 @@
 const expect  = require('chai').expect
-const Chance = require('chance')
 const _ = require('lodash')
 const decache = require('decache')
 
-const chance = new Chance()
 const defaultProducts = require('../data/products')
 const modulePath = '../functions/totalHelper'
 
