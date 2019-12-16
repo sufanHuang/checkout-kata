@@ -139,7 +139,7 @@ getTotal(0, coconutObject)
 * Get order maximum total of all items without taking account special or markdown.
 * Example(get the maximum total of 7 coconut, which has "2 for $4" special mode)
 ````javascript
-getMaximumTotal(0, mcoconutObject)
+getMaximumTotal(0, coconutObject)
 // => 15.05
 ````
 
