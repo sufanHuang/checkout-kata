@@ -41,8 +41,7 @@ const getPriceNwithPriceX = (item, quantity) => {
         if(specialsQuantity >= requiredQuantity) {
             total = total + getDefaultTotal(item, requiredQuantity)
 
-            specialsQuantity = specialsQuantity - requiredQuantity
-            specialsQuantity = specialsQuantity - reducedPriceQuantity
+            specialsQuantity = specialsQuantity - requiredQuantity - reducedPriceQuantity
 
             let quantityToCharge = specialsQuantity > 0 ? reducedPriceQuantity : specialsQuantity + reducedPriceQuantity
 
@@ -85,19 +84,31 @@ module.exports = {
 
     getPriceMethod: (activeSpecial) => {
         let currentModule = module.exports
-        switch(activeSpecial) {
+        if (activeSpecial === 'N-for-X'){
+            return currentModule.getPriceNforX
+        }
+        if (activeSpecial === 'N-with-X'){
+            return currentModule.getPriceNwithX
+        }
+        if (activeSpecial === 'N-with-price-X'){
+            return currentModule.getPriceNwithPriceX
+        }
+        return currentModule.getDefaultTotal
+
+
+        /*switch(activeSpecial) {
             case 'N-for-X':
                 return currentModule.getPriceNforX
-                break
+                break;
             case 'N-with-X':
                 return currentModule.getPriceNwithX
-                break
+                break;
             case 'N-with-price-X':
                 return currentModule.getPriceNwithPriceX
-                break
+                break;
             default:
                 return currentModule.getDefaultTotal
-        }
+        }*/
     },
 
     getPriceNforX,
