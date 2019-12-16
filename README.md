@@ -4,7 +4,7 @@ An API that provides various product checkout functionalities. Each API function
 
 ## Tools
 
-* Nodejs, Lodash, Mocha, Chai, Chance
+* Node(version 10), Lodash, Mocha, Chai 
 
 ## Installation
 ````javascript
