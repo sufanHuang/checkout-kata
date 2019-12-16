@@ -94,21 +94,6 @@ module.exports = {
             return currentModule.getPriceNwithPriceX
         }
         return currentModule.getDefaultTotal
-
-
-        /*switch(activeSpecial) {
-            case 'N-for-X':
-                return currentModule.getPriceNforX
-                break;
-            case 'N-with-X':
-                return currentModule.getPriceNwithX
-                break;
-            case 'N-with-price-X':
-                return currentModule.getPriceNwithPriceX
-                break;
-            default:
-                return currentModule.getDefaultTotal
-        }*/
     },
 
     getPriceNforX,
