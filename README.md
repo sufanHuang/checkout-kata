@@ -12,4 +12,4 @@ npm install
 npm test
 ````
 
-### Please see API documentation [here](/functions/README.MD).
+### Please see API documentation [here](./functions/README.MD).
