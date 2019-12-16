@@ -1,8 +1,6 @@
 const expect  = require('chai').expect
-const _ = require('lodash')
 const decache = require('decache')
 
-const defaultProducts = require('../data/products')
 const modulePath = '../functions/totalHelper'
 
 describe('totalHelper functionality', () => {
