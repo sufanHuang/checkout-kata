@@ -128,18 +128,18 @@ getDefaultTotal(appleObject, 3)
 ````
 
 *getTotal(Number, Object)*
-* Get each item total based on get price method, which depends on special mode.
+* Get order total in cart, by first geting each item total based on get price method, which depends on special mode.
 * Example (coconut has a special mode of "2 for $4";customer has put 7 coconut in cart)
 ````javascript
-getTotal(coconutObject)
+getTotal(0, coconutObject)
 // => 14.15. 
 ````
 
 *getMaximumTotal(Number, Object)*
-* Get maximum total of an item without taking account special or markdown.
+* Get order maximum total of all items without taking account special or markdown.
 * Example(get the maximum total of 7 coconut, which has "2 for $4" special mode)
 ````javascript
-getMaximumTotal(mcoconutObject)
+getMaximumTotal(0, mcoconutObject)
 // => 15.05
 ````
 
