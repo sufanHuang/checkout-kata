@@ -12,7 +12,7 @@ describe('totalHelper functionality', () => {
     })
 
     describe('getPriceNforX functionality', () => {
-        it('should compute proper price', () => {
+        it('should compute proper price when quantity is bigger than limit', () => {
             let item = {
                 price: 10,
                 limit: 5,
@@ -23,7 +23,7 @@ describe('totalHelper functionality', () => {
 
             expect(total).to.equal(45)
         });
-        it('should compute proper price', () => {
+        it('should compute proper price when quantity is smaller than limit', () => {
             let item = {
                 price: 10,
                 limit: 5,
@@ -34,10 +34,21 @@ describe('totalHelper functionality', () => {
 
             expect(total).to.equal(28)
         });
+        it('should compute proper price when quantity is equal to limit', () => {
+            let item = {
+                price: 10,
+                limit: 5,
+                specialsPrice: 7
+            }
+
+            let total = helper.getPriceNforX(item, 5)
+
+            expect(total).to.equal(35)
+        });
     })
 
     describe('getPriceNwithX functionality', () => {
-        it('should compute proper price', () => {
+        it('should compute proper price when quantity is bigger than limit', () => {
             let item = {
                 price: 10,
                 limit: 6,
@@ -48,7 +59,7 @@ describe('totalHelper functionality', () => {
             let total = helper.getPriceNwithX(item, 7)
             expect(total).to.equal(50)
         })
-        it('should compute proper price', () => {
+        it('should compute proper price when quantity is equal to limit', () => {
             let item = {
                 price: 10,
                 limit: 6,
@@ -59,10 +70,21 @@ describe('totalHelper functionality', () => {
             let total = helper.getPriceNwithX(item, 6)
             expect(total).to.equal(40)
         })
+        it('should compute proper price when quantity is smaller than limit', () => {
+            let item = {
+                price: 10,
+                limit: 6,
+                freeQuantity: 1,
+                requiredQuantity: 2
+            }
+
+            let total = helper.getPriceNwithX(item, 4)
+            expect(total).to.equal(30)
+        })
     })
 
     describe('getPriceNwithPriceX functionality', () => {
-        it('should compute proper price', () => {
+        it('should compute proper price when quantity is bigger than limit', () => {
             let item = {
                 price: 10,
                 limit: 6,
@@ -75,7 +97,7 @@ describe('totalHelper functionality', () => {
             expect(total).to.equal(58)
         })
 
-        it('should should compute proper price under limit', () => {
+        it('should should compute proper price when quantity is smaller than limit', () => {
             let item = {
                 price: 10,
                 limit: 6,
@@ -100,7 +122,7 @@ describe('totalHelper functionality', () => {
             let total = helper.getPriceNwithPriceX(item, 5)
             expect(total).to.equal(47)
         });
-        it('should compute proper price with higher required quantity and a higher reduced price quantity', () => {
+        it('should compute proper price with higher reduced price quantity', () => {
             let item = {
                 price: 10,
                 limit: 6,
@@ -115,26 +137,26 @@ describe('totalHelper functionality', () => {
     });
 
     describe('getPriceMethod functionality', () => {
-        it('should return proper method', () => {
+        it('should return method getPriceNforX', () => {
             let activeSpecial = "N-for-X"
             let result = helper.getPriceMethod(activeSpecial)
 
             expect(result).to.equal(helper.getPriceNforX)
         });
 
-        it('should return proper method', () => {
+        it('should return method getPriceNwithX', () => {
             let activeSpecial = "N-with-X"
             let result = helper.getPriceMethod(activeSpecial)
 
             expect(result).to.equal(helper.getPriceNwithX)
         });
-        it('should return proper method', () => {
+        it('should return method getPriceNwithPriceX', () => {
             let activeSpecial = "N-with-price-X"
             let result = helper.getPriceMethod(activeSpecial)
 
             expect(result).to.equal(helper.getPriceNwithPriceX)
         });
-        it('should return proper method', () => {
+        it('should return method getDefaultTotal', () => {
             let activeSpecial = ""
             let result = helper.getPriceMethod(activeSpecial)
 
