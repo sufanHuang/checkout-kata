@@ -23,6 +23,17 @@ describe('totalHelper functionality', () => {
 
             expect(total).to.equal(45)
         });
+        it('should compute proper price', () => {
+            let item = {
+                price: 10,
+                limit: 5,
+                specialsPrice: 7
+            }
+
+            let total = helper.getPriceNforX(item, 4)
+
+            expect(total).to.equal(28)
+        });
     })
 
     describe('getPriceNwithX functionality', () => {
